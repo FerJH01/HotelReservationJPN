@@ -1,7 +1,9 @@
 package ui;
 
 import api.AdminResource;
+import model.RoomType;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import static ui.MainMenu.drawMainOptions;
@@ -30,6 +32,7 @@ public class AdminMenu {
                     switch (option) {
                         case 1:
 
+                            seeAllCustomers();
                             drawAdminOptions();
 
                             t = false;
@@ -44,6 +47,7 @@ public class AdminMenu {
                             break;
                         case 4:
                             System.out.println("This is option 4");
+                            addARoom();
                             t = false;
                             break;
                         case 5:
@@ -65,5 +69,65 @@ public class AdminMenu {
                 }
             }
         }
+    }
+
+
+
+    public static void seeAllCustomers() {
+
+        if (AdminResource.getAllCustomer() != null) {
+            System.out.println(AdminResource.getAllCustomer());
+
+        } else {
+
+            System.out.println("There aren't customers to show at the moment");
+        }
+    }
+    public static void seeAllRooms(){}
+
+    public static void seeAllReservations(){}
+
+    public static void addARoom(){
+
+         String roomNumber;
+         Double price;
+         RoomType enumeration;
+         Scanner scanner = new Scanner(System.in);
+
+         do {
+
+                 System.out.println("Please enter a Room number: ");
+                 roomNumber = scanner.nextLine();
+
+         }while(roomNumber.isBlank());
+
+        boolean t;
+
+        do {
+            System.out.println("Please enter a Room price: ");
+
+            try {
+                    price = scanner.nextDouble();
+                    t = false;
+
+            } catch (InputMismatchException ex) {
+
+                System.out.println("Please enter a valid price.");
+                t = true;
+            }
+
+        }while(t);
+
+
+
+
+
+
+    }
+
+    //optional
+    public static void addTestData(){
+        //method that Admin can use to add customers / rooms and reservations as test
+
     }
 }

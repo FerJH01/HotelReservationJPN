@@ -1,5 +1,9 @@
 package ui;
 
+import api.AdminResource;
+import api.HotelResource;
+import model.Customer;
+
 import java.util.Scanner;
 
 public class MainMenu {
@@ -36,6 +40,10 @@ public class MainMenu {
                         }
                         case 3 -> {
 
+                            createAnAccount();
+                            drawMainOptions();
+
+
                             t = false;
                         }
                         case 4 -> {
@@ -64,4 +72,70 @@ public class MainMenu {
 
 
     }
+
+public static void findAndReserveARoom(){
+
 }
+
+public static void seeMyReservation(){
+
+}
+
+public static void createAnAccount(){
+        String email;
+        String firstName;
+        String lastName;
+        Customer cust = null;
+        boolean t = true;
+
+        System.out.println("CREATING AN ACCOUNT");
+        System.out.println("------------------------");
+
+        Scanner scanner = new Scanner(System.in);
+
+        do {
+            System.out.println("Please enter your First Name: ");
+            firstName = scanner.nextLine();
+        } while(firstName.isBlank());
+
+        do {
+            System.out.println("Please enter your Last Name: ");
+            lastName = scanner.nextLine();
+        } while(lastName.isBlank());
+
+            while(t) {
+                t = false;
+                System.out.println("Please enter an email address in the format name@domain.domain: ");
+                email = scanner.nextLine();
+
+                while(HotelResource.getCustomer(email)!=null){
+
+                    System.out.println("The email provided is already registered. Please provide a different email: ");
+                    email = scanner.nextLine();
+                }
+
+                try {
+                    HotelResource.createACustomer(email, firstName, lastName);
+                    cust = AdminResource.getCustomer(email);
+                } catch (IllegalArgumentException ex) {
+
+                    System.out.println("ERROR! The email is in the wrong format"+"\n");
+                    t = true;
+                }
+
+
+            }
+                System.out.println("Account created successfully");
+
+                System.out.println(cust);
+    }
+
+}
+
+
+
+
+
+
+
+

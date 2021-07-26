@@ -8,7 +8,7 @@ public class Customer {
     private String lastName;
     private String email;
 
-    public Customer(String firstName, String lastName, String email) {
+    public Customer(String email, String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
 
@@ -63,10 +63,10 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+        return  "***********************************" + "\n"
+                + "First Name: " + firstName + "\n" +
+                "Last Name: " + lastName + "\n" +
+                "Email: " + email + "\n"
+                ;
     }
 }

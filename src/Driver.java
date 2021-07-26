@@ -1,3 +1,4 @@
+import api.HotelResource;
 import model.*;
 import ui.MainMenu;
 
@@ -12,6 +13,16 @@ public class Driver {
     public static void main(String[] args) {
 
         MainMenu.drawMainOptions();
+
+//
+//        HotelResource.createACustomer("fer@gmail.com","fer", "hadad");
+//        HotelResource.createACustomer("pepe@gmail.com","pepe", "joda");
+//        HotelResource.createACustomer("yami@gmail.com","yami", "yami");
+//
+//        Customer cust = HotelResource.getCustomer("fer@mail.com");
+//
+//        System.out.println(cust);
+
 
 //Room rm = new Room("356",123.80,RoomType.SINGLE);
 //        FreeRoom fr = new FreeRoom("123",0.0,RoomType.DOUBLE);
