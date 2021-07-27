@@ -99,6 +99,8 @@ public class AdminMenu {
          Scanner scanner = new Scanner(System.in);
 
 
+
+
              do {
 
                  System.out.println("Please enter a Room number: ");
@@ -124,20 +126,19 @@ public class AdminMenu {
                  }
              } while (t);
 
+
                  System.out.println("Would you like to add another room? enter Y or N: ");
                  keepAdding = scanner.nextLine();
 
-                 if(keepAdding.equals("Y")){
+                 if(keepAdding.equals("N")){
+
+                     t1=true;
+                 }
 
 
 
-             } else{
 
-                 t1=true;
-             }
-
-
-         }
+    }
 
 
     //optional
