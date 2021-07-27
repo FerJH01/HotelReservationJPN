@@ -92,38 +92,53 @@ public class AdminMenu {
          String roomNumber;
          Double price;
          RoomType enumeration;
+         String keepAdding;
+         boolean t = false;
+         boolean t1 = false;
+         boolean t2 = false;
          Scanner scanner = new Scanner(System.in);
 
-         do {
+
+             do {
 
                  System.out.println("Please enter a Room number: ");
                  roomNumber = scanner.nextLine();
 
-         }while(roomNumber.isBlank());
-
-        boolean t;
-
-        do {
-            System.out.println("Please enter a Room price: ");
-
-            try {
-                    price = scanner.nextDouble();
-                    t = false;
-
-            } catch (InputMismatchException ex) {
-
-                System.out.println("Please enter a valid price.");
-                t = true;
-            }
-
-        }while(t);
+             } while (roomNumber.isBlank());
 
 
+             do {
+                 System.out.println("Please enter a Room price: ");
+
+                 try {
+                     price = scanner.nextDouble();
+                     t = false;
+
+                 } catch (InputMismatchException ex) {
+
+                     System.out.println("ERROR! No valid price was entered");
+
+                     t = true;
+
+                     scanner.next();
+                 }
+             } while (t);
+
+                 System.out.println("Would you like to add another room? enter Y or N: ");
+                 keepAdding = scanner.nextLine();
+
+                 if(keepAdding.equals("Y")){
 
 
 
+             } else{
 
-    }
+                 t1=true;
+             }
+
+
+         }
+
 
     //optional
     public static void addTestData(){
