@@ -42,7 +42,12 @@ public class ReservationService {
         return null;
     }
 
-    public static void printAllReservation(){};
+    public static void printAllReservation(){}
+
+    public static Collection<IRoom> getAllRooms(){
+
+        return allrooms;
+    }
 
 
 

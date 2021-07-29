@@ -24,7 +24,9 @@ public class AdminResource {
     }
 
     public static Collection<IRoom> getAllRooms() {
-        return null;
+
+
+        return ReservationService.getAllRooms();
     }
 
     public static Collection<Customer> getAllCustomer(){
@@ -32,7 +34,7 @@ public class AdminResource {
         return CustomerService.getAllCustomers();
     }
 
-    public static void displayAllReservations(){};
+    public static void displayAllReservations(){}
 
 
 }
