@@ -12,13 +12,13 @@ public class AdminResource {
 
     public static Customer getCustomer(String email){
 
-        return CustomerService.getCustomer(email);
+        return CustomerService.getCustomerService().getCustomer(email);
     }
 
     public static void addRoom(List<IRoom> rooms){
 
         for(IRoom room : rooms){
-            ReservationService.addRoom(room);
+            ReservationService.getReservationService().addRoom(room);
         }
 
     }
@@ -26,12 +26,13 @@ public class AdminResource {
     public static Collection<IRoom> getAllRooms() {
 
 
-        return ReservationService.getAllRooms();
+        return ReservationService.getReservationService().getAllRooms();
     }
 
     public static Collection<Customer> getAllCustomer(){
 
-        return CustomerService.getAllCustomers();
+
+        return CustomerService.getCustomerService().getAllCustomers();
     }
 
     public static void displayAllReservations(){}

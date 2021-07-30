@@ -13,13 +13,13 @@ public class HotelResource {
 
     public static Customer getCustomer(String email){
 
-       return CustomerService.getCustomer(email);
+       return CustomerService.getCustomerService().getCustomer(email);
 
     }
 
     public static void createACustomer(String email, String firstName,String lastName){
 
-        CustomerService.addCustomer(email,firstName,lastName);
+        CustomerService.getCustomerService().addCustomer(email,firstName,lastName);
 
     }
 

@@ -8,16 +8,29 @@ import java.util.List;
 
 public class CustomerService {
 
-    static List<Customer> customers = new ArrayList<Customer>();
+    private static CustomerService customerService;
+    private List<Customer> customers;
 
-    public static void addCustomer(String email, String firstName, String lastName){
-            Customer customer = new Customer(email,firstName,lastName);
-
-            customers.add(customer);
-
+    private CustomerService(){
+        this.customers = new ArrayList<Customer>();
     }
 
-    public static Customer getCustomer(String customerEmail){
+    public static CustomerService getCustomerService(){
+
+        if(customerService == null){
+
+            customerService = new CustomerService();
+        }
+        return customerService;
+    }
+
+
+    public void addCustomer(String email, String firstName, String lastName){
+            Customer customer = new Customer(email,firstName,lastName);
+            customers.add(customer);
+    }
+
+    public Customer getCustomer(String customerEmail){
 
         Customer foundCustomer = null;
 
@@ -32,7 +45,7 @@ public class CustomerService {
         return foundCustomer;
     }
 
-    public static Collection<Customer> getAllCustomers(){
+    public Collection<Customer> getAllCustomers(){
 
         Collection<Customer> customers1;
 

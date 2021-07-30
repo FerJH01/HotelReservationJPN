@@ -10,20 +10,39 @@ import java.util.List;
 
 public class ReservationService {
 
-    static List<Reservation> reservations = new ArrayList<Reservation>();
-    static List<IRoom> allrooms = new ArrayList<IRoom>();
+    private static ReservationService reservationService;
+    private List<Reservation> reservations;
+    private List<IRoom> allrooms;
 
-    public static void addRoom(IRoom room){
+    private ReservationService(){
+
+        this.reservations = new ArrayList<Reservation>();
+        this.allrooms = new ArrayList<IRoom>();
+
+    }
+
+    public static ReservationService getReservationService(){
+
+        if(reservationService == null){
+
+            reservationService = new ReservationService();
+        }
+
+        return reservationService;
+    }
+
+
+    public void addRoom(IRoom room){
 
         allrooms.add(room);
     }
 
-    public static IRoom getARoom(String roomId){
+    public IRoom getARoom(String roomId){
 
         return null;
     }
 
-    public static Reservation reserveARoom(Customer customer, IRoom room, Date checkInDate, Date checkOutDate){
+    public Reservation reserveARoom(Customer customer, IRoom room, Date checkInDate, Date checkOutDate){
 
         Reservation reservation = new Reservation(customer,room,checkInDate,checkOutDate);
 
@@ -32,19 +51,19 @@ public class ReservationService {
         return null;
     }
 
-    public static Collection<IRoom> findRooms(Date checkInDate, Date checkOutDate){
+    public Collection<IRoom> findRooms(Date checkInDate, Date checkOutDate){
 
         return null;
     }
 
-    public static Collection<Reservation> getCustomersReservation(Customer customer){
+    public Collection<Reservation> getCustomersReservation(Customer customer){
 
         return null;
     }
 
-    public static void printAllReservation(){}
+    public void printAllReservation(){}
 
-    public static Collection<IRoom> getAllRooms(){
+    public Collection<IRoom> getAllRooms(){
 
         return allrooms;
     }
