@@ -3,6 +3,7 @@ package service;
 import model.Customer;
 import model.IRoom;
 import model.Reservation;
+import model.Room;
 
 import java.awt.*;
 import java.util.*;
@@ -11,12 +12,12 @@ import java.util.List;
 public class ReservationService {
 
     private static ReservationService reservationService;
-    private List<Reservation> reservations;
+    private Set<Reservation> reservations;
     private List<IRoom> allrooms;
 
     private ReservationService(){
 
-        this.reservations = new ArrayList<Reservation>();
+        this.reservations = new HashSet<Reservation>();
         this.allrooms = new ArrayList<IRoom>();
 
     }
@@ -37,10 +38,18 @@ public class ReservationService {
         allrooms.add(room);
     }
 
-    public IRoom getARoom(String roomId){
+    public IRoom getARoom(String roomId) {
+        IRoom foundRoom = null;
 
-        return null;
+        for (IRoom room : allrooms) {
+
+            if (room.getRoomNumber().equals(roomId)) {
+                foundRoom = room;
+            }
+        }
+        return foundRoom;
     }
+
 
     public Reservation reserveARoom(Customer customer, IRoom room, Date checkInDate, Date checkOutDate){
 
@@ -61,7 +70,22 @@ public class ReservationService {
         return null;
     }
 
-    public void printAllReservation(){}
+
+    public void printAllReservation(){
+
+        if(!reservations.isEmpty()) {
+
+            for (Reservation reservation : reservations) {
+
+                System.out.println(reservation);
+            }
+
+        }else{
+
+            System.out.println("There are not reservations to show at the moment");
+
+        }
+    }
 
     public Collection<IRoom> getAllRooms(){
 

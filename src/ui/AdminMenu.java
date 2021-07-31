@@ -46,11 +46,11 @@ public class AdminMenu {
                             t = false;
                             break;
                         case 3:
-                            System.out.println("This is option 3");
+                            seeAllReservations();
+                            drawAdminOptions();
                             t = false;
                             break;
                         case 4:
-
                             addARoom();
                             drawAdminOptions();
                             t = false;
@@ -106,7 +106,11 @@ public class AdminMenu {
 
     }
 
-    public static void seeAllReservations(){}
+    public static void seeAllReservations(){
+
+        AdminResource.displayAllReservations();
+
+    }
 
     public static void addARoom(){
 

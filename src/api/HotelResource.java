@@ -4,6 +4,7 @@ import model.Customer;
 import model.IRoom;
 import model.Reservation;
 import service.CustomerService;
+import service.ReservationService;
 
 import java.util.Collection;
 import java.util.Date;
@@ -25,7 +26,7 @@ public class HotelResource {
 
     public static IRoom getRoom(String roomNumber){
 
-        return null;
+        return ReservationService.getReservationService().getARoom(roomNumber);
     }
 
     public static Reservation bookARoom(String customerEmail, IRoom room, Date checkInDate, Date checkOutDate){

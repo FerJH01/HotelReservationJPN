@@ -35,7 +35,10 @@ public class AdminResource {
         return CustomerService.getCustomerService().getAllCustomers();
     }
 
-    public static void displayAllReservations(){}
+    public static void displayAllReservations(){
+
+        ReservationService.getReservationService().printAllReservation();
+    }
 
 
 }
