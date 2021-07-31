@@ -48,10 +48,10 @@ public class Room implements IRoom{
 
     @Override
     public String toString() {
-        return "Room{" +
-                "roomNumber='" + roomNumber + '\'' +
-                ", price=" + price +
-                ", Type of Room=" + enumeration +
-                '}';
+        return "***********************************" + "\n"
+                + "Room number: " + roomNumber + "\n" +
+                "Room type: " + enumeration + "\n" +
+                "Room price: " + price + "\n"
+                ;
     }
 }

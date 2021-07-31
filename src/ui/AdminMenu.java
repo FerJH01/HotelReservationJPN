@@ -1,6 +1,7 @@
 package ui;
 
 import api.AdminResource;
+import model.FreeRoom;
 import model.IRoom;
 import model.Room;
 import model.RoomType;
@@ -74,7 +75,6 @@ public class AdminMenu {
             }
         }
     }
-
 
 
     public static void seeAllCustomers() {
@@ -165,8 +165,13 @@ public class AdminMenu {
 
                 } while (type != 1 && type != 2);
 
-                IRoom room = new Room(roomNumber, price, roomType);
-                rooms.add(room);
+                if(price == 0){
+                    IRoom room = new FreeRoom(roomNumber,price,roomType);
+                    rooms.add(room);
+                } else {
+                    IRoom room = new Room(roomNumber, price, roomType);
+                    rooms.add(room);
+                }
 
                 do {
                     System.out.println("Add another Room? Y/N: ");
