@@ -60,6 +60,7 @@ public class ReservationService {
         return null;
     }
 
+    //FALTA
     public Collection<IRoom> findRooms(Date checkInDate, Date checkOutDate){
 
         return null;
@@ -67,7 +68,23 @@ public class ReservationService {
 
     public Collection<Reservation> getCustomersReservation(Customer customer){
 
-        return null;
+        Collection<Reservation> allReservationsFound = null;
+
+        Reservation foundReservation;
+
+        for(Reservation reservation: reservations){
+
+            if(reservations.contains(customer)){
+
+                foundReservation = reservation;
+
+                allReservationsFound.add(foundReservation);
+
+            }
+
+        }
+
+        return allReservationsFound;
     }
 
 

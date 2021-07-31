@@ -3,8 +3,11 @@ package ui;
 import api.AdminResource;
 import api.HotelResource;
 import model.Customer;
+import model.Reservation;
 
+import java.util.Collection;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class MainMenu {
 
@@ -34,7 +37,8 @@ public class MainMenu {
                             t = false;
                         }
                         case 2 -> {
-                            System.out.println("This is option 2");
+                            seeMyReservation();
+                            drawMainOptions();
 
                             t = false;
                         }
@@ -77,9 +81,41 @@ public static void findAndReserveARoom(){
 
 }
 
-public static void seeMyReservation(){
+public static void seeMyReservation() {
+    Scanner input = new Scanner(System.in);
+    String email = null;
+    final String emailRegex = "^(.+)@(.+).(.+)$";
+    final Pattern pattern = Pattern.compile(emailRegex);
+    boolean t = true;
 
-}
+do{
+    System.out.println("Please enter your email: ");
+    email = input.nextLine();
+
+    if (pattern.matcher(email).matches()) {
+
+        t = false;
+
+    } else {
+
+        System.out.println("Enter a correct email address");
+    }
+}while(t);
+
+try {
+
+        for (Reservation reservation : HotelResource.getCustomerReservation(email)) {
+
+            System.out.println(reservation);
+
+        }
+    }catch (NullPointerException ex){
+
+        System.out.println("No reservations found with the email provided.");
+
+        }
+
+    }
 
 public static void createAnAccount(){
         String email;
