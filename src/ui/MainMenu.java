@@ -5,7 +5,10 @@ import api.HotelResource;
 import model.Customer;
 import model.Reservation;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -33,7 +36,7 @@ public class MainMenu {
 
                     switch (option) {
                         case 1 -> {
-                            System.out.println("This is option 1");
+                            findAndReserveARoom();
                             t = false;
                         }
                         case 2 -> {
@@ -78,29 +81,97 @@ public class MainMenu {
     }
 
 public static void findAndReserveARoom(){
+        Scanner input = new Scanner(System.in);
+        String email = null;
+        String checkIn = null;
+        String checkOut = null;
+        Date dateCheckIn = null;
+        Date dateCheckOut = null;
+        String patter = "dd/MM/yyyy";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(patter);
+        
+       
 
-}
+    email = emailValidator();
 
-public static void seeMyReservation() {
-    Scanner input = new Scanner(System.in);
-    String email = null;
-    final String emailRegex = "^(.+)@(.+).(.+)$";
-    final Pattern pattern = Pattern.compile(emailRegex);
-    boolean t = true;
+    if(HotelResource.getCustomer(email)!=null){
 
-do{
-    System.out.println("Please enter your email: ");
-    email = input.nextLine();
+       
+        do {
+            System.out.println("Please enter check In Date in format dd/mm/yyyy: ");
+            checkIn = input.nextLine();
 
-    if (pattern.matcher(email).matches()) {
+            try {
+                dateCheckIn =  simpleDateFormat.parse(checkIn);
 
-        t = false;
+
+            } catch (ParseException ex) {
+
+                System.out.println("Please enter a valid Date");
+
+            }
+        }while(dateCheckIn==null);
+
+           do{
+            System.out.println("Please enter check Out Date dd/mm/yyyy: ");
+            checkOut = input.nextLine();
+            try {
+
+                dateCheckOut = simpleDateFormat.parse(checkOut);
+            }catch (ParseException ex){
+
+
+                System.out.println("Please enter a valid Date");
+
+            }
+           
+            
+        } while(dateCheckOut==null);
+
+
+
+
 
     } else {
 
-        System.out.println("Enter a correct email address");
+        System.out.println("You need to create an account first. Please select option 3.");
+        drawMainOptions();
+
+ 
+
+
     }
-}while(t);
+
+    System.out.println("CheckIn: " + dateCheckIn);
+    System.out.println("CheckOut: " + dateCheckOut);
+
+}
+
+
+//check if it works with reservations
+public static void seeMyReservation() {
+
+        String email = null;
+
+//    final String emailRegex = "^(.+)@(.+).(.+)$";
+//    final Pattern pattern = Pattern.compile(emailRegex);
+//    boolean t = true;
+//
+//do{
+//    System.out.println("Please enter your email: ");
+//    email = input.nextLine();
+//
+//    if (pattern.matcher(email).matches()) {
+//
+//        t = false;
+//
+//    } else {
+//
+//        System.out.println("Enter a correct email address");
+//    }
+//}while(t);
+
+    email = emailValidator();
 
 try {
 
@@ -111,7 +182,7 @@ try {
         }
     }catch (NullPointerException ex){
 
-        System.out.println("No reservations found with the email provided.");
+        System.out.println("No reservations found with the provided email.");
 
         }
 
@@ -164,6 +235,32 @@ public static void createAnAccount(){
                 System.out.println("Account created successfully");
 
                 System.out.println(cust);
+    }
+
+    public static String emailValidator(){
+        Scanner input = new Scanner(System.in);
+        String email1;
+
+        final String emailRegex = "^(.+)@(.+).(.+)$";
+        final Pattern pattern = Pattern.compile(emailRegex);
+        boolean t = true;
+
+        do{
+            System.out.println("Please enter your email: ");
+            email1 = input.nextLine();
+
+            if (pattern.matcher(email1).matches()) {
+
+                t = false;
+
+            } else {
+
+                System.out.println("Enter a correct email address");
+            }
+        }while(t);
+
+        return email1;
+
     }
 
 }
