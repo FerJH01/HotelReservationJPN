@@ -113,6 +113,7 @@ public class AdminMenu {
 
     }
 
+    //FALTA VALIDAR QUE NO SE INGRESE MISMO ROOM NUMBER Y EXCEPTION PARA ROOMTYPE
     public static void addARoom(){
 
         List<IRoom> rooms = new ArrayList<IRoom>();
