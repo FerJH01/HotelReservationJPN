@@ -32,21 +32,28 @@ public class HotelResource {
     //FALTA
     public static Reservation bookARoom(String customerEmail, IRoom room, Date checkInDate, Date checkOutDate){
 
+        Customer customer = getCustomer(customerEmail);
+
+        ReservationService.getReservationService().reserveARoom(customer,room,checkInDate,checkOutDate);
+
         return null;
+
     }
 
     public static Collection<Reservation> getCustomerReservation(String customerEmail){
-        Customer cus = null;
+        Collection<Reservation> customerReservations;
+        Customer customer = getCustomer(customerEmail);
 
-        cus = CustomerService.getCustomerService().getCustomer(customerEmail);
+        customerReservations = ReservationService.getReservationService().getCustomersReservation(customer);
 
-        return ReservationService.getReservationService().getCustomersReservation(cus);
+        return customerReservations;
     }
 
-    //FALTA
-    public Collection<IRoom> findARoom(Date checkIn, Date checkOut){
 
-        return null;
+    public static Collection<IRoom> findARoom(Date checkIn, Date checkOut){
+
+
+        return ReservationService.getReservationService().findRooms(checkIn, checkOut);
     }
 
 

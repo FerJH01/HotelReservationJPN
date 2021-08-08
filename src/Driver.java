@@ -1,3 +1,4 @@
+import api.AdminResource;
 import api.HotelResource;
 import model.*;
 import ui.MainMenu;
@@ -6,8 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 
 public class Driver {
 
@@ -19,7 +19,11 @@ public class Driver {
 //        System.out.println(currentDate);
 
 
-        MainMenu.drawMainOptions();
+       MainMenu.drawMainOptions();
+
+
+
+
 
 //
 //        HotelResource.createACustomer("fer@gmail.com","fer", "hadad");

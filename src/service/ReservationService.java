@@ -57,34 +57,61 @@ public class ReservationService {
 
         reservations.add(reservation);
 
-        return null;
+        return reservation;
     }
 
-    //FALTA
+    //FALTA REVISAR VER DE CAMBIAR
     public Collection<IRoom> findRooms(Date checkInDate, Date checkOutDate){
 
+        Collection<IRoom> availRooms = new HashSet<IRoom>();
+
+        if(!reservations.isEmpty()){
+
+            for(Reservation res : reservations){
+                for(IRoom room : allrooms){
+
+                    if(room.getRoomNumber().equals(res.getRoom().getRoomNumber())
+                            && (checkInDate.before(res.getCheckInDate())) && (checkOutDate.before(res.getCheckOutDate()))
+                        ||(checkInDate.after(res.getCheckInDate())) && (checkOutDate.after(res.getCheckOutDate()))
+                        || (!res.getRoom().getRoomNumber().contains(room.getRoomNumber()))){
+
+                        availRooms.add(room);
+
+                    } else if (room.getRoomNumber().equals(res.getRoom().getRoomNumber())){
+
+                        availRooms.remove(room);
+                    }
 
 
-        return null;
+
+                }
+
+            }
+
+        } else {
+
+            availRooms = allrooms;
+        }
+
+        return availRooms;
     }
 
     public Collection<Reservation> getCustomersReservation(Customer customer){
 
-        Collection<Reservation> allReservationsFound = null;
+        Collection<Reservation> allReservationsFound = new ArrayList<>();
 
-        Reservation foundReservation;
+            for (Reservation res : reservations) {
 
-        for(Reservation reservation: reservations){
+                if (res.getCustomer().equals(customer)) {
 
-            if(reservations.contains(customer)){
+                    allReservationsFound.add(res);
 
-                foundReservation = reservation;
 
-                allReservationsFound.add(foundReservation);
+                }
+
 
             }
-
-        }
+        
 
         return allReservationsFound;
     }

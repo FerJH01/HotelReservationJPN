@@ -3,9 +3,11 @@ package ui;
 import api.AdminResource;
 import api.HotelResource;
 import model.Customer;
+import model.IRoom;
 import model.Reservation;
+import service.ReservationService;
 
-import java.sql.SQLOutput;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -14,9 +16,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Scanner;
+
+import java.util.*;
 import java.util.regex.Pattern;
 
 public class MainMenu {
@@ -44,6 +45,7 @@ public class MainMenu {
                     switch (option) {
                         case 1 -> {
                             findAndReserveARoom();
+                            drawMainOptions();
                             t = false;
                         }
                         case 2 -> {
@@ -87,22 +89,26 @@ public class MainMenu {
 
     }
 
-public static void findAndReserveARoom(){
-        Scanner input = new Scanner(System.in);
-        String email = null;
-        String checkIn = null;
-        String checkOut = null;
-        Date dateCheckIn = null;
-        Date dateCheckOut = null;
-        String patter = "dd/MM/yyyy";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(patter);
-        LocalDate currentLocalDate = LocalDate.now();
-        ZoneId defaultZoneId = ZoneId.systemDefault();
-        Date currentDate = Date.from(currentLocalDate.atStartOfDay(defaultZoneId).toInstant());
+public static void findAndReserveARoom() {
+    Scanner input = new Scanner(System.in);
+    String email;
+    String checkIn;
+    String checkOut;
+    Date dateCheckIn = null;
+    Date dateCheckOut = null;
+    String patter = "dd/MM/yyyy";
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat(patter);
+    LocalDate currentLocalDate = LocalDate.now();
+    ZoneId defaultZoneId = ZoneId.systemDefault();
+    Date currentDate = Date.from(currentLocalDate.atStartOfDay(defaultZoneId).toInstant());
+    Collection<IRoom> availableRooms;
+    String roomChosen;
+    boolean out = true;
+    IRoom chosenRoomObject = null;
 
-        email = emailValidator();
+    email = emailValidator();
 
-    if(HotelResource.getCustomer(email)!=null) {
+    if (HotelResource.getCustomer(email) != null) {
 
 
         boolean dateIsBeforeCurrent;
@@ -122,7 +128,7 @@ public static void findAndReserveARoom(){
 
             } catch (ParseException e) {
 
-                System.out.println("There is an issue with the dates");
+                System.out.println("Invalid date");
 
             }
 
@@ -131,6 +137,7 @@ public static void findAndReserveARoom(){
 
                 if (dateCheckIn != null) {
                     dateIsBeforeCurrent = dateCheckIn.before(currentDate);
+
                 }
 
 
@@ -156,7 +163,9 @@ public static void findAndReserveARoom(){
 
             } catch (ParseException e) {
 
-                System.out.println("There is an issue with the dates");
+                System.out.println("Invalid date");
+
+
 
             }
 
@@ -186,10 +195,41 @@ public static void findAndReserveARoom(){
 
     }
 
-    //continuar construyendo objeto Reservation
+    //CONTINUAR CON PROCESO DE RESERVA
 
-    System.out.println("CheckIn: " + dateCheckIn);
-    System.out.println("CheckOut: " + dateCheckOut);
+    availableRooms = HotelResource.findARoom(dateCheckIn, dateCheckOut);
+
+    System.out.println("Available Rooms");
+    for (IRoom room : availableRooms) {
+
+        System.out.println(room);
+
+    }
+    do {
+        System.out.println("Please choose the room number you would like to reserve: ");
+        roomChosen = input.nextLine();
+
+
+            if(HotelResource.getRoom(roomChosen) == null){
+
+                System.out.println("Invalid Room number.");
+
+            } else {
+                chosenRoomObject = HotelResource.getRoom(roomChosen);
+
+                System.out.println("**You have reserved the following room**");
+
+                System.out.println(HotelResource.getRoom(roomChosen));
+
+                HotelResource.bookARoom(email,chosenRoomObject,dateCheckIn,dateCheckOut);
+
+                out = false;
+            }
+
+
+
+    } while (out);
+
 
 
 
@@ -198,43 +238,41 @@ public static void findAndReserveARoom(){
 
 //check if it works with reservations
 public static void seeMyReservation() {
+        Collection <Reservation> myReservations;
 
-        String email = null;
-
-//    final String emailRegex = "^(.+)@(.+).(.+)$";
-//    final Pattern pattern = Pattern.compile(emailRegex);
-//    boolean t = true;
-//
-//do{
-//    System.out.println("Please enter your email: ");
-//    email = input.nextLine();
-//
-//    if (pattern.matcher(email).matches()) {
-//
-//        t = false;
-//
-//    } else {
-//
-//        System.out.println("Enter a correct email address");
-//    }
-//}while(t);
-
+    String email;
     email = emailValidator();
 
-try {
 
-        for (Reservation reservation : HotelResource.getCustomerReservation(email)) {
+    try {
 
-            System.out.println(reservation);
+    myReservations = HotelResource.getCustomerReservation(email);
 
+        if(!myReservations.isEmpty()) {
+
+            for (Reservation reservation : myReservations) {
+
+                System.out.println(reservation);
+            }
+
+        } else{
+
+            System.out.println("No reservations found with the provided email.");
         }
+
     }catch (NullPointerException ex){
 
         System.out.println("No reservations found with the provided email.");
 
         }
 
-    }
+
+
+}
+
+
+
+
 
 public static void createAnAccount(){
         String email;
@@ -287,7 +325,7 @@ public static void createAnAccount(){
 
     public static String emailValidator(){
         Scanner input = new Scanner(System.in);
-        String email1;
+        String email;
 
         final String emailRegex = "^(.+)@(.+).(.+)$";
         final Pattern pattern = Pattern.compile(emailRegex);
@@ -295,9 +333,9 @@ public static void createAnAccount(){
 
         do{
             System.out.println("Please enter your email: ");
-            email1 = input.nextLine();
+            email = input.nextLine();
 
-            if (pattern.matcher(email1).matches()) {
+            if (pattern.matcher(email).matches()) {
 
                 t = false;
 
@@ -307,7 +345,7 @@ public static void createAnAccount(){
             }
         }while(t);
 
-        return email1;
+        return email;
 
     }
 
@@ -327,7 +365,7 @@ public static void createAnAccount(){
 
         }catch(DateTimeParseException ex){
 
-            System.out.println("Invalid date." +"\n");
+
             return false;
 
         }

@@ -1,6 +1,7 @@
 package ui;
 
 import api.AdminResource;
+import api.HotelResource;
 import model.FreeRoom;
 import model.IRoom;
 import model.Room;
@@ -120,18 +121,49 @@ public class AdminMenu {
          Double price = null;
          String keepAdding;
          boolean t = false;
+         boolean repeatedRoomNumber = false;
          int type;
          RoomType roomType = null;
          Scanner scanner = new Scanner(System.in);
+         Collection <IRoom> checkRepeatedRooms;
+         List<String> checkRepeatedRoomsFirstLoop = new ArrayList<>();
 
 
             do {
+
+
                 do {
 
                     System.out.println("Please enter a Room number: ");
                     roomNumber = scanner.nextLine();
 
-                } while (roomNumber.isBlank());
+
+//                    checkRepeatedRoomsFirstLoop.add(roomNumber);
+//
+//                    if (checkRepeatedRoomsFirstLoop.contains(roomNumber)){
+//
+//                        repeatedRoomNumber = true;
+//                    } else {
+//
+//                        repeatedRoomNumber = false;
+//                    }
+
+                    checkRepeatedRooms = AdminResource.getAllRooms();
+
+
+                    for(IRoom rm : checkRepeatedRooms){
+
+                        if(rm.getRoomNumber().equals(roomNumber)){
+                            repeatedRoomNumber = true;
+
+                            System.out.println("There is already a room with this number.");
+                        }
+                    }
+
+
+
+
+                } while (roomNumber.isBlank() || repeatedRoomNumber);
 
 
                 do {
