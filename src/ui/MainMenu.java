@@ -5,8 +5,15 @@ import api.HotelResource;
 import model.Customer;
 import model.Reservation;
 
+import java.sql.SQLOutput;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Scanner;
@@ -89,47 +96,86 @@ public static void findAndReserveARoom(){
         Date dateCheckOut = null;
         String patter = "dd/MM/yyyy";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(patter);
-        
-       
+        LocalDate currentLocalDate = LocalDate.now();
+        ZoneId defaultZoneId = ZoneId.systemDefault();
+        Date currentDate = Date.from(currentLocalDate.atStartOfDay(defaultZoneId).toInstant());
 
-    email = emailValidator();
+        email = emailValidator();
 
-    if(HotelResource.getCustomer(email)!=null){
+    if(HotelResource.getCustomer(email)!=null) {
 
-       
+
+        boolean dateIsBeforeCurrent;
+        boolean dateCheckOutbeforedateCheckIn;
         do {
+            dateIsBeforeCurrent = false;
+
             System.out.println("Please enter check In Date in format dd/mm/yyyy: ");
             checkIn = input.nextLine();
 
+            dateValidator(checkIn);
+
             try {
-                dateCheckIn =  simpleDateFormat.parse(checkIn);
+
+                dateCheckIn = simpleDateFormat.parse(checkIn);
 
 
-            } catch (ParseException ex) {
+            } catch (ParseException e) {
 
-                System.out.println("Please enter a valid Date");
+                System.out.println("There is an issue with the dates");
 
             }
-        }while(dateCheckIn==null);
 
-           do{
+            try {
+
+
+                if (dateCheckIn != null) {
+                    dateIsBeforeCurrent = dateCheckIn.before(currentDate);
+                }
+
+
+            } catch (NullPointerException ex) {
+                System.out.println("Current Date is null");
+
+            }
+
+
+        } while ((!dateValidator(checkIn)) || dateIsBeforeCurrent);
+
+
+        do {
+            dateCheckOutbeforedateCheckIn = false;
+
             System.out.println("Please enter check Out Date dd/mm/yyyy: ");
             checkOut = input.nextLine();
+
+            dateValidator(checkOut);
+
             try {
-
                 dateCheckOut = simpleDateFormat.parse(checkOut);
-            }catch (ParseException ex){
 
+            } catch (ParseException e) {
 
-                System.out.println("Please enter a valid Date");
+                System.out.println("There is an issue with the dates");
 
             }
-           
-            
-        } while(dateCheckOut==null);
+
+            try {
 
 
+                if (dateCheckOut != null) {
+                    dateIsBeforeCurrent = dateCheckOut.before(currentDate);
+                    dateCheckOutbeforedateCheckIn = dateCheckOut.before(dateCheckIn);
 
+                }
+
+
+            } catch (NullPointerException ex) {
+                System.out.println("Current Date is null");
+
+            }
+
+        } while (!dateValidator(checkOut) || dateIsBeforeCurrent || dateCheckOutbeforedateCheckIn);
 
 
     } else {
@@ -137,13 +183,15 @@ public static void findAndReserveARoom(){
         System.out.println("You need to create an account first. Please select option 3.");
         drawMainOptions();
 
- 
-
 
     }
 
+    //continuar construyendo objeto Reservation
+
     System.out.println("CheckIn: " + dateCheckIn);
     System.out.println("CheckOut: " + dateCheckOut);
+
+
 
 }
 
@@ -262,6 +310,31 @@ public static void createAnAccount(){
         return email1;
 
     }
+
+    public static boolean dateValidator(String date){
+
+
+
+        final DateTimeFormatter dateformat = new DateTimeFormatterBuilder()
+                .parseStrict()
+                .appendPattern("dd/MM/uuuu")
+                .toFormatter()
+                .withResolverStyle(ResolverStyle.STRICT);
+
+        try {
+
+            LocalDate.parse(date,dateformat);
+
+        }catch(DateTimeParseException ex){
+
+            System.out.println("Invalid date." +"\n");
+            return false;
+
+        }
+
+        return true;
+    }
+
 
 }
 

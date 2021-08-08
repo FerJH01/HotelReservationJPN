@@ -4,6 +4,8 @@ import ui.MainMenu;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -11,6 +13,11 @@ public class Driver {
 
 
     public static void main(String[] args) {
+//        LocalDate currentLocalDate = LocalDate.now();
+//        ZoneId defaultZoneId = ZoneId.systemDefault();
+//        Date currentDate = Date.from(currentLocalDate.atStartOfDay(defaultZoneId).toInstant());
+//        System.out.println(currentDate);
+
 
         MainMenu.drawMainOptions();
 
