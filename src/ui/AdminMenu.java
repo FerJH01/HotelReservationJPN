@@ -123,11 +123,13 @@ public class AdminMenu {
          String keepAdding;
          boolean t = false;
          boolean repeatedRoomNumber = false;
-         int type;
+         boolean inputMismatch = true;
+         int type = 0;
          RoomType roomType = null;
          Scanner scanner = new Scanner(System.in);
          Collection <IRoom> checkRepeatedRooms;
          List<String> checkRepeatedRoomsFirstLoop = new ArrayList<>();
+
 
 
             do {
@@ -162,8 +164,6 @@ public class AdminMenu {
                     }
 
 
-
-
                 } while (roomNumber.isBlank() || repeatedRoomNumber);
 
 
@@ -184,25 +184,35 @@ public class AdminMenu {
                     }
                 } while (t);
 
-                do {
-                    System.out.println("Please enter the type of room: 1 - Single bed, 2 - Double Bed");
-                    type = scanner.nextInt();
+                    do {
+                        try {
 
-                    if (type == 1) {
+                            System.out.println("Please enter the type of room: 1 - Single bed, 2 - Double Bed");
+                            type = scanner.nextInt();
+                            inputMismatch = false;
 
-                        roomType = RoomType.SINGLE;
+                            if (type == 1) {
+                                roomType = RoomType.SINGLE;
+                            } else if (type == 2) {
 
-                    } else if (type == 2) {
+                                roomType = RoomType.DOUBLE;
 
-                        roomType = RoomType.DOUBLE;
-                    } else {
+                            } else {
 
-                        System.out.println("Please enter 1 for Single Bed rooms or 2 for Double Bed");
-                    }
+                                System.out.println("Please enter 1 for Single Bed rooms or 2 for Double Bed");
+                            }
 
-                } while (type != 1 && type != 2);
 
-                if(price == 0){
+                        } catch (InputMismatchException ex) {
+
+                            System.out.println("This is not a valida input.");
+                            scanner.next();
+
+                        }
+
+                    } while(inputMismatch || type != 1 && type != 2);
+
+                    if(price == 0){
                     IRoom room = new FreeRoom(roomNumber,price,roomType);
                     rooms.add(room);
                 } else {
