@@ -119,7 +119,6 @@ public class AdminMenu {
         List<IRoom> rooms = new ArrayList<IRoom>();
 
          String roomNumber;
-         int roomNumberToCast = 0;
          Double price = null;
          String keepAdding;
          boolean t = false;
@@ -212,16 +211,14 @@ public class AdminMenu {
                     rooms.add(room);
                 }
 
+                AdminResource.addRoom(rooms);
+
                 do {
                     System.out.println("Add another Room? Y/N: ");
                     keepAdding = scanner.next().toLowerCase().trim();
                 } while (!keepAdding.equals("y") && !keepAdding.equals("n"));
 
             }while(keepAdding.equals("y"));
-
-            AdminResource.addRoom(rooms);
-
-
 
     }
 

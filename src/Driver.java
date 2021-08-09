@@ -13,44 +13,44 @@ public class Driver {
 
 
     public static void main(String[] args) {
-//       MainMenu.drawMainOptions();
+       MainMenu.drawMainOptions();
 
-        Scanner input = new Scanner(System.in);
-        Integer roomNumberToCast;
-        String roomNumber = null;
-        Set<Integer> listOfRoomNumbers = new HashSet<Integer>();
-        String keepAdding;
-
-        do{
-            System.out.println("Enter a Room number: ");
-            roomNumberToCast = input.nextInt();
-            listOfRoomNumbers.add(roomNumberToCast);
-
-            for(Integer nm : listOfRoomNumbers){
-
-                if(nm.equals(roomNumberToCast)){
-
-                    System.out.println("Room number already exist");
-
-                } else {
-
-                                listOfRoomNumbers.add(roomNumberToCast);
-                                roomNumber = String.valueOf(roomNumberToCast);
-                                System.out.println("Room added: " + roomNumber);
-
-                                
-                }
-
-            }
-
-
-
-            
-            System.out.println("Enter another room? Y/N");
-            keepAdding = input.nextLine();
-
-
-        }while(keepAdding.equals("y"));
+//        Scanner input = new Scanner(System.in);
+//        Integer roomNumberToCast;
+//        String roomNumber = null;
+//        Set<Integer> listOfRoomNumbers = new HashSet<Integer>();
+//        String keepAdding;
+//
+//        do{
+//            System.out.println("Enter a Room number: ");
+//            roomNumberToCast = input.nextInt();
+//            listOfRoomNumbers.add(roomNumberToCast);
+//
+//            for(Integer nm : listOfRoomNumbers){
+//
+//                if(nm.equals(roomNumberToCast)){
+//
+//                    System.out.println("Room number already exist");
+//
+//                } else {
+//
+//                                listOfRoomNumbers.add(roomNumberToCast);
+//                                roomNumber = String.valueOf(roomNumberToCast);
+//                                System.out.println("Room added: " + roomNumber);
+//
+//
+//                }
+//
+//            }
+//
+//
+//
+//
+//            System.out.println("Enter another room? Y/N");
+//            keepAdding = input.next().toLowerCase().trim();
+//
+//
+//        }while(keepAdding.equals("y"));
 //
 //        Set<String> checkRepeatedRoomsFirstLoop = new HashSet<String>();
 //        Scanner scanner = new Scanner(System.in);
