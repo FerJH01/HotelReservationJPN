@@ -119,6 +119,7 @@ public class AdminMenu {
         List<IRoom> rooms = new ArrayList<IRoom>();
 
          String roomNumber;
+         int roomNumberToCast = 0;
          Double price = null;
          String keepAdding;
          boolean t = false;
@@ -128,7 +129,7 @@ public class AdminMenu {
          RoomType roomType = null;
          Scanner scanner = new Scanner(System.in);
          Collection <IRoom> checkRepeatedRooms;
-         List<String> checkRepeatedRoomsFirstLoop = new ArrayList<>();
+
 
 
 
@@ -140,17 +141,6 @@ public class AdminMenu {
                     System.out.println("Please enter a Room number: ");
                     roomNumber = scanner.nextLine();
 
-
-//                    checkRepeatedRoomsFirstLoop.add(roomNumber);
-//
-//                    if (checkRepeatedRoomsFirstLoop.contains(roomNumber)){
-//
-//                        repeatedRoomNumber = true;
-//                    } else {
-//
-//                        repeatedRoomNumber = false;
-//                    }
-
                     checkRepeatedRooms = AdminResource.getAllRooms();
 
 
@@ -160,6 +150,8 @@ public class AdminMenu {
                             repeatedRoomNumber = true;
 
                             System.out.println("There is already a room with this number.");
+
+
                         }
                     }
 
@@ -228,6 +220,7 @@ public class AdminMenu {
             }while(keepAdding.equals("y"));
 
             AdminResource.addRoom(rooms);
+
 
 
     }

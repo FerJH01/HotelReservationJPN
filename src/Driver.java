@@ -13,13 +13,84 @@ public class Driver {
 
 
     public static void main(String[] args) {
-//        LocalDate currentLocalDate = LocalDate.now();
+//       MainMenu.drawMainOptions();
+
+        Scanner input = new Scanner(System.in);
+        Integer roomNumberToCast;
+        String roomNumber = null;
+        Set<Integer> listOfRoomNumbers = new HashSet<Integer>();
+        String keepAdding;
+
+        do{
+            System.out.println("Enter a Room number: ");
+            roomNumberToCast = input.nextInt();
+            listOfRoomNumbers.add(roomNumberToCast);
+
+            for(Integer nm : listOfRoomNumbers){
+
+                if(nm.equals(roomNumberToCast)){
+
+                    System.out.println("Room number already exist");
+
+                } else {
+
+                                listOfRoomNumbers.add(roomNumberToCast);
+                                roomNumber = String.valueOf(roomNumberToCast);
+                                System.out.println("Room added: " + roomNumber);
+
+                                
+                }
+
+            }
+
+
+
+            
+            System.out.println("Enter another room? Y/N");
+            keepAdding = input.nextLine();
+
+
+        }while(keepAdding.equals("y"));
+//
+//        Set<String> checkRepeatedRoomsFirstLoop = new HashSet<String>();
+//        Scanner scanner = new Scanner(System.in);
+//        String roomNumber;
+//        boolean repeatedRoomNumber;
+//
+//        do {
+//            System.out.println("Please enter a Room number: ");
+//            roomNumber = scanner.nextLine();
+//
+//
+//            checkRepeatedRoomsFirstLoop.add(roomNumber);
+//
+//            if (checkRepeatedRoomsFirstLoop. {
+//
+//                System.out.println(checkRepeatedRoomsFirstLoop);
+//
+//                repeatedRoomNumber = true;
+//                System.out.println("repeated");
+//            } else {
+//
+//                repeatedRoomNumber = false;
+//                System.out.println("unique");
+//                scanner.nextLine();
+//            }
+//
+//        }while (repeatedRoomNumber);
+
+
+
+
+
+
+        //     LocalDate currentLocalDate = LocalDate.now();
 //        ZoneId defaultZoneId = ZoneId.systemDefault();
 //        Date currentDate = Date.from(currentLocalDate.atStartOfDay(defaultZoneId).toInstant());
 //        System.out.println(currentDate);
 
 
-       MainMenu.drawMainOptions();
+
 
 
 
