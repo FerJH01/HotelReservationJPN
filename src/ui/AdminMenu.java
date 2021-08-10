@@ -120,7 +120,7 @@ public class AdminMenu {
 
          String roomNumber;
          Double price = null;
-         String keepAdding;
+         String keepAdding = "y";
          boolean t = false;
          boolean repeatedRoomNumber = false;
          boolean inputMismatch = true;
@@ -132,30 +132,47 @@ public class AdminMenu {
 
 
 
-            do {
+            while(keepAdding.equals("y")) {
+
+                checkRepeatedRooms = AdminResource.getAllRooms();
 
 
                 do {
 
+
+
                     System.out.println("Please enter a Room number: ");
+
                     roomNumber = scanner.nextLine();
 
-                    checkRepeatedRooms = AdminResource.getAllRooms();
-
-
+                    do{
                     for(IRoom rm : checkRepeatedRooms){
 
-                        if(rm.getRoomNumber().equals(roomNumber)){
-                            repeatedRoomNumber = true;
 
-                            System.out.println("There is already a room with this number.");
+                            if (rm.getRoomNumber().equals(roomNumber)) {
 
 
+
+                                System.out.println("There is already a room with this number.");
+
+                                repeatedRoomNumber = true;
+
+                                System.out.println("Please enter a Room number: ");
+
+                                roomNumber = scanner.nextLine();
+
+
+                            } else{
+
+                                repeatedRoomNumber = false;
+
+                            }
                         }
-                    }
+
+                    }while (repeatedRoomNumber);
 
 
-                } while (roomNumber.isBlank() || repeatedRoomNumber);
+                } while (roomNumber.isBlank());
 
 
                 do {
@@ -196,29 +213,35 @@ public class AdminMenu {
 
                         } catch (InputMismatchException ex) {
 
-                            System.out.println("This is not a valida input.");
+                            System.out.println("This is not a valid input.");
                             scanner.next();
 
                         }
 
                     } while(inputMismatch || type != 1 && type != 2);
 
-                    if(price == 0){
-                    IRoom room = new FreeRoom(roomNumber,price,roomType);
-                    rooms.add(room);
-                } else {
-                    IRoom room = new Room(roomNumber, price, roomType);
-                    rooms.add(room);
-                }
 
-                AdminResource.addRoom(rooms);
+
+                    if(price == 0){
+                        IRoom room = new FreeRoom(roomNumber,price,roomType);
+                        rooms.add(room);
+                    } else {
+                            IRoom room = new Room(roomNumber, price, roomType);
+                            rooms.add(room);
+                        }
+
+                     AdminResource.addRoom(rooms);
+
 
                 do {
                     System.out.println("Add another Room? Y/N: ");
                     keepAdding = scanner.next().toLowerCase().trim();
                 } while (!keepAdding.equals("y") && !keepAdding.equals("n"));
 
-            }while(keepAdding.equals("y"));
+            }
+
+
+
 
     }
 
