@@ -60,7 +60,7 @@ public class ReservationService {
         return reservation;
     }
 
-    //FALTA REVISAR VER DE CAMBIAR
+
     public Collection<IRoom> findRooms(Date checkInDate, Date checkOutDate){
 
         Collection<IRoom> availRooms = new HashSet<IRoom>();
@@ -134,6 +134,7 @@ public class ReservationService {
     }
 
     public Collection<IRoom> getAllRooms(){
+
 
         return allrooms;
     }

@@ -9,6 +9,7 @@ import model.RoomType;
 import service.ReservationService;
 
 import java.util.*;
+import java.util.regex.Pattern;
 
 import static ui.MainMenu.drawMainOptions;
 
@@ -37,37 +38,30 @@ public class AdminMenu {
                         case 1:
 
                             seeAllCustomers();
-                            drawAdminOptions();
-
-                            t = false;
                             break;
                         case 2:
                             seeAllRooms();
-                            drawAdminOptions();
-                            t = false;
+
                             break;
                         case 3:
                             seeAllReservations();
-                            drawAdminOptions();
-                            t = false;
+
                             break;
                         case 4:
-                            addARoom();
-                            drawAdminOptions();
-                            t = false;
+                            addRoom();
+
                             break;
                         case 5:
                             System.out.println("This is option 5");
-                            t = false;
+
                             break;
                         case 6:
-                            System.out.println("This is option 6");
-                            t = false;
-                            drawMainOptions();
+
+                            MainMenu.drawMainOptions();
 
                         default:
                             System.out.println("Please select a an option from 1 to 6");
-                            drawAdminOptions();
+
                     }
                 } catch (NumberFormatException e) {
 
@@ -113,138 +107,158 @@ public class AdminMenu {
 
     }
 
-    //FALTA VALIDAR QUE NO SE INGRESE MISMO ROOM NUMBER Y EXCEPTION PARA ROOMTYPE
-    public static void addARoom(){
 
+    public static void addRoom(){
+        Scanner input = new Scanner(System.in);
         List<IRoom> rooms = new ArrayList<IRoom>();
+        Set<String> roomNumbers = new HashSet<>();
 
-         String roomNumber;
-         Double price = null;
-         String keepAdding = "y";
-         boolean t = false;
-         boolean repeatedRoomNumber = false;
-         boolean inputMismatch = true;
-         int type = 0;
-         RoomType roomType = null;
-         Scanner scanner = new Scanner(System.in);
-         Collection <IRoom> checkRepeatedRooms;
-
-
-
-
-            while(keepAdding.equals("y")) {
-
-                checkRepeatedRooms = AdminResource.getAllRooms();
+        final String emailRegex = "^[0-9]*$";
+        final Pattern pattern = Pattern.compile(emailRegex);
+        boolean incompatibleFormat = true;
+        boolean repeatedRoomNumber = true;
+        boolean repeatedRoomNumberAddedAlready = true;
+        boolean priceMismatch;
+        boolean typeMismatch = true;
+        String keepAdding;
+        String roomNumber;
+        int repeated;
+        double price = 0;
+        RoomType roomType = null;
+        int type = 0;
+        int flag = 0;
 
 
-                do {
+do {
+    do {
+        Collection<IRoom> roomsAlreadyCreated = AdminResource.getAllRooms();
+        repeated = 0;
+
+        System.out.println("Please enter a Room number: ");
+        roomNumber = input.nextLine();
+
+        if (pattern.matcher(roomNumber).matches()) {
+
+            incompatibleFormat = false;
+            repeatedRoomNumber = roomNumbers.add(roomNumber);
 
 
+        } else {
 
-                    System.out.println("Please enter a Room number: ");
+            System.out.println("Enter a correct room number");
+        }
 
-                    roomNumber = scanner.nextLine();
+        for(IRoom rm : roomsAlreadyCreated){
 
-                    do{
-                    for(IRoom rm : checkRepeatedRooms){
+            repeatedRoomNumberAddedAlready = rm.getRoomNumber().equals(roomNumber);
 
+            if (repeatedRoomNumberAddedAlready){
 
-                            if (rm.getRoomNumber().equals(roomNumber)) {
+                repeated++;
+            }
 
+            System.out.println(repeatedRoomNumberAddedAlready);
+        }
 
+        if(repeated!=0 || !repeatedRoomNumber){
 
-                                System.out.println("There is already a room with this number.");
+            System.out.println("Repeated room numbers are not allowed");
 
-                                repeatedRoomNumber = true;
+        }
 
-                                System.out.println("Please enter a Room number: ");
-
-                                roomNumber = scanner.nextLine();
-
-
-                            } else{
-
-                                repeatedRoomNumber = false;
-
-                            }
-                        }
-
-                    }while (repeatedRoomNumber);
-
-
-                } while (roomNumber.isBlank());
-
-
-                do {
-                    System.out.println("Please enter a Room price: ");
-
-                    try {
-                        price = scanner.nextDouble();
-                        t = false;
-
-                    } catch (InputMismatchException ex) {
-
-                        System.out.println("ERROR! No valid price was entered");
-
-                        t = true;
-
-                        scanner.next();
-                    }
-                } while (t);
-
-                    do {
-                        try {
-
-                            System.out.println("Please enter the type of room: 1 - Single bed, 2 - Double Bed");
-                            type = scanner.nextInt();
-                            inputMismatch = false;
-
-                            if (type == 1) {
-                                roomType = RoomType.SINGLE;
-                            } else if (type == 2) {
-
-                                roomType = RoomType.DOUBLE;
-
-                            } else {
-
-                                System.out.println("Please enter 1 for Single Bed rooms or 2 for Double Bed");
-                            }
-
-
-                        } catch (InputMismatchException ex) {
-
-                            System.out.println("This is not a valid input.");
-                            scanner.next();
-
-                        }
-
-                    } while(inputMismatch || type != 1 && type != 2);
+    } while (incompatibleFormat || !repeatedRoomNumber || repeated!=0);
 
 
 
-                    if(price == 0){
-                        IRoom room = new FreeRoom(roomNumber,price,roomType);
-                        rooms.add(room);
-                    } else {
-                            IRoom room = new Room(roomNumber, price, roomType);
-                            rooms.add(room);
-                        }
+    do {
+        System.out.println("Please enter a Room price: ");
 
-                     AdminResource.addRoom(rooms);
+        try {
+            price = input.nextDouble();
+            priceMismatch = false;
 
 
-                do {
-                    System.out.println("Add another Room? Y/N: ");
-                    keepAdding = scanner.next().toLowerCase().trim();
-                } while (!keepAdding.equals("y") && !keepAdding.equals("n"));
+        } catch (InputMismatchException ex) {
+
+            System.out.println("ERROR! No valid price was entered");
+
+            priceMismatch = true;
+
+            input.next();
+        }
+    } while (priceMismatch);
+
+
+
+    do {
+
+        try {
+
+            System.out.println("Please enter the type of room: 1 - Single bed, 2 - Double Bed");
+
+            type = input.nextInt();
+
+            typeMismatch = false;
+
+
+            if (type == 1) {
+
+                roomType = RoomType.SINGLE;
+
+            } else if (type == 2) {
+
+
+                roomType = RoomType.DOUBLE;
+
+
+            } else {
+
+
+                System.out.println("Please enter 1 for Single Bed rooms or 2 for Double Bed");
 
             }
 
+        } catch (InputMismatchException ex) {
 
 
+            System.out.println("This is not a valid input.");
+
+            input.next();
+
+        }
+
+    } while(typeMismatch || type != 1 && type != 2);
+
+
+    if(price == 0){
+
+        IRoom room = new FreeRoom(roomNumber,price,roomType);
+
+        rooms.add(room);
+
+    } else {
+
+        IRoom room = new Room(roomNumber, price, roomType);
+
+        rooms.add(room);
 
     }
 
+
+    do {
+        System.out.println("Keep adding rooms? Y/N");
+        keepAdding = input.nextLine().toLowerCase().trim();
+    }while(!keepAdding.equals("y") && !keepAdding.equals("n"));
+
+
+
+}while(keepAdding.equals("y"));
+
+
+AdminResource.addRoom(rooms);
+
+
+    }
 
 
 

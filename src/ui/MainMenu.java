@@ -45,27 +45,21 @@ public class MainMenu {
                     switch (option) {
                         case 1 -> {
                             findAndReserveARoom();
-                            drawMainOptions();
-                            t = false;
+
                         }
                         case 2 -> {
                             seeMyReservation();
-                            drawMainOptions();
 
-                            t = false;
                         }
                         case 3 -> {
 
                             createAnAccount();
-                            drawMainOptions();
 
-
-                            t = false;
                         }
                         case 4 -> {
-                            System.out.println("This is option 4");
+
                             AdminMenu.drawAdminOptions();
-                            t = false;
+
                         }
                         case 5 -> {
                             System.out.println("The application will end now");
@@ -104,7 +98,9 @@ public static void findAndReserveARoom() {
     Collection<IRoom> availableRooms;
     String roomChosen;
     boolean out = true;
+    String seeFreeRoomsNextWeek;
     IRoom chosenRoomObject = null;
+    boolean keepHere = true;
 
     email = emailValidator();
 
@@ -197,46 +193,184 @@ public static void findAndReserveARoom() {
 
     //CONTINUAR CON PROCESO DE RESERVA
 
-    availableRooms = HotelResource.findARoom(dateCheckIn, dateCheckOut);
 
-    System.out.println("Available Rooms");
-    for (IRoom room : availableRooms) {
 
-        System.out.println(room);
+//    availableRooms = HotelResource.findARoom(dateCheckIn, dateCheckOut);
+//
+//    if(!availableRooms.isEmpty()) {
+//
+//        System.out.println("Available Rooms");
+//        for (IRoom room : availableRooms) {
+//
+//            System.out.println(room);
+//
+//        }
+//        do {
+//            System.out.println("Please choose the room number you would like to reserve: ");
+//            roomChosen = input.nextLine();
+//
+//
+//            if (HotelResource.getRoom(roomChosen) == null) {
+//
+//                System.out.println("Invalid Room number.");
+//
+//            } else {
+//                chosenRoomObject = HotelResource.getRoom(roomChosen);
+//
+//                System.out.println("**You have reserved the following room**");
+//
+//                System.out.println(HotelResource.getRoom(roomChosen));
+//
+//                HotelResource.bookARoom(email, chosenRoomObject, dateCheckIn, dateCheckOut);
+//
+//                out = false;
+//            }
+//
+//
+//        } while (out);
+//
+//    }else {
+//
+//        System.out.println("There are no rooms available at the moment"+"\n");
+//
+//        do {
+//            System.out.println("Would you like to see rooms available in the next 7 days? y/n");
+//            seeFreeRoomsNextWeek = input.nextLine().toLowerCase().trim();
+//        }while(!seeFreeRoomsNextWeek.equals("y") && !seeFreeRoomsNextWeek.equals("n"));
+//
+//        if(seeFreeRoomsNextWeek.equals("y")){
+//
+//            Calendar c1 = Calendar.getInstance();
+//            Calendar c2 = Calendar.getInstance();
+//            c1.setTime(dateCheckIn);
+//            c2.setTime(dateCheckOut);
+//            c1.add(Calendar.DATE,7);
+//            c2.add(Calendar.DATE,7);
+//
+//            try {
+//                dateCheckIn = simpleDateFormat.parse(simpleDateFormat.format(c1.getTime()));
+//                dateCheckOut = simpleDateFormat.parse(simpleDateFormat.format(c2.getTime()));
+//                System.out.println(dateCheckIn);
+//                System.out.println(dateCheckOut);
+//
+//
+//            }catch (ParseException ex){
+//
+//                System.out.println("Unable to parse the date");
+//
+//
+//            }
+//
+//
+//
+//
+//        }
+//
+//    }
 
-    }
-    do {
+    do{
+        availableRooms = HotelResource.findARoom(dateCheckIn, dateCheckOut);
+
+        if (availableRooms.isEmpty()) {
+
+            System.out.println("There are no rooms available at the moment" + "\n");
+
+            do {
+                System.out.println("Would you like to see rooms available in the next 7 days? y/n");
+                seeFreeRoomsNextWeek = input.nextLine().toLowerCase().trim();
+            } while (!seeFreeRoomsNextWeek.equals("y") && !seeFreeRoomsNextWeek.equals("n"));
+
+            if (seeFreeRoomsNextWeek.equals("y")) {
+
+                Calendar c1 = Calendar.getInstance();
+                Calendar c2 = Calendar.getInstance();
+                c1.setTime(dateCheckIn);
+                c2.setTime(dateCheckOut);
+                c1.add(Calendar.DATE, 7);
+                c2.add(Calendar.DATE, 7);
+
+                try {
+                    dateCheckIn = simpleDateFormat.parse(simpleDateFormat.format(c1.getTime()));
+                    dateCheckOut = simpleDateFormat.parse(simpleDateFormat.format(c2.getTime()));
+                    System.out.println(dateCheckIn);
+                    System.out.println(dateCheckOut);
+
+
+                } catch (ParseException ex) {
+
+                    System.out.println("Unable to parse the date");
+
+
+                }
+
+
+                availableRooms = HotelResource.findARoom(dateCheckIn, dateCheckOut);
+                System.out.println("Available Rooms");
+                for (IRoom room : availableRooms) {
+
+                    System.out.println(room);
+
+                }
+            } else {
+
+
+                keepHere = false;
+                out = false;
+
+            }
+
+
+        } else {
+            
+            keepHere = false;
+            
+
+            System.out.println("Available Rooms");
+            for (IRoom room : availableRooms) {
+
+                System.out.println(room);
+
+            }
+        }
+    }while(keepHere);
+
+
+
+    while(out){
         System.out.println("Please choose the room number you would like to reserve: ");
         roomChosen = input.nextLine();
 
 
-            if(HotelResource.getRoom(roomChosen) == null){
+        if (HotelResource.getRoom(roomChosen) == null) {
 
-                System.out.println("Invalid Room number.");
+            System.out.println("Invalid Room number.");
 
-            } else {
-                chosenRoomObject = HotelResource.getRoom(roomChosen);
+        } else {
+            chosenRoomObject = HotelResource.getRoom(roomChosen);
 
-                System.out.println("**You have reserved the following room**");
+            System.out.println("**You have reserved the following room**");
 
-                System.out.println(HotelResource.getRoom(roomChosen));
+            System.out.println(HotelResource.getRoom(roomChosen));
 
-                HotelResource.bookARoom(email,chosenRoomObject,dateCheckIn,dateCheckOut);
+            HotelResource.bookARoom(email, chosenRoomObject, dateCheckIn, dateCheckOut);
 
-                out = false;
-            }
+            out = false;
+        }
 
 
-
-    } while (out);
-
+    }
 
 
 
 }
 
 
-//check if it works with reservations
+
+
+
+
+
+
 public static void seeMyReservation() {
         Collection <Reservation> myReservations;
 
@@ -269,9 +403,6 @@ public static void seeMyReservation() {
 
 
 }
-
-
-
 
 
 public static void createAnAccount(){
