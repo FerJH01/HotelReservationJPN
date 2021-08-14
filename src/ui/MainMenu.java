@@ -90,6 +90,8 @@ public static void findAndReserveARoom() {
     String checkOut;
     Date dateCheckIn = null;
     Date dateCheckOut = null;
+    Date dateCheckInPlus7 = null;
+    Date dateCheckOutPlus7 = null;
     String patter = "dd/MM/yyyy";
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat(patter);
     LocalDate currentLocalDate = LocalDate.now();
@@ -290,10 +292,10 @@ public static void findAndReserveARoom() {
                 c2.add(Calendar.DATE, 7);
 
                 try {
-                    dateCheckIn = simpleDateFormat.parse(simpleDateFormat.format(c1.getTime()));
-                    dateCheckOut = simpleDateFormat.parse(simpleDateFormat.format(c2.getTime()));
-                    System.out.println(dateCheckIn);
-                    System.out.println(dateCheckOut);
+                    dateCheckInPlus7 = simpleDateFormat.parse(simpleDateFormat.format(c1.getTime()));
+                    dateCheckOutPlus7 = simpleDateFormat.parse(simpleDateFormat.format(c2.getTime()));
+                    System.out.println(dateCheckInPlus7);
+                    System.out.println(dateCheckOutPlus7);
 
 
                 } catch (ParseException ex) {

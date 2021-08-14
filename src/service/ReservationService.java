@@ -61,19 +61,46 @@ public class ReservationService {
     }
 
 
-    public Collection<IRoom> findRooms(Date checkInDate, Date checkOutDate){
+    public Collection<IRoom> findRooms(Date checkInDate, Date checkOutDate) {
 
         Collection<IRoom> availRooms = new HashSet<IRoom>();
 
-        if(!reservations.isEmpty()){
 
-            for(Reservation res : reservations){
-                for(IRoom room : allrooms){
-
-                    if(room.getRoomNumber().equals(res.getRoom().getRoomNumber())
-                            && (checkInDate.before(res.getCheckInDate())) && (checkOutDate.before(res.getCheckOutDate()))
-                        ||(checkInDate.after(res.getCheckInDate())) && (checkOutDate.after(res.getCheckOutDate()))
-                        || (!res.getRoom().getRoomNumber().contains(room.getRoomNumber()))){
+//        if (!reservations.isEmpty()) {
+//
+//            for (Reservation res : reservations) {
+//
+//                for (IRoom room : allrooms) {
+//
+//                    if (res.getRoom().getRoomNumber().equals(room.getRoomNumber())) {
+//
+//                        if ((checkInDate.before(res.getCheckInDate()) && checkOutDate.before(res.getCheckOutDate()) || (checkInDate.after(res.getCheckInDate()) && checkOutDate.after(res.getCheckOutDate())) || !res.getRoom().getRoomNumber().contains(room.getRoomNumber()))) {
+//
+//                            availRooms.add(room);
+//
+//                        } else if(room.getRoomNumber().equals(res.getRoom().getRoomNumber())){
+//
+//                            availRooms.remove(room);
+//                        }
+//                    }
+//                }
+//            }
+//
+//        } else {
+//
+//            availRooms = allrooms;
+//        }
+//
+//        return availRooms;
+        if(reservations.size()==0){
+            availRooms = allrooms;
+            return availRooms;
+        } else {
+            for(IRoom room : allrooms){
+                for(Reservation res : reservations){
+                    if((room.getRoomNumber().equals(res.getRoom().getRoomNumber()))
+                            && ((checkInDate.before(res.getCheckInDate()) && checkOutDate.before(res.getCheckInDate()))
+                        || (checkInDate.after(res.getCheckOutDate()) && checkOutDate.after(res.getCheckOutDate()))) || (!res.getRoom().getRoomNumber().contains(room.getRoomNumber()))){
 
                         availRooms.add(room);
 
@@ -81,20 +108,16 @@ public class ReservationService {
 
                         availRooms.remove(room);
                     }
-
-
-
                 }
 
             }
 
-        } else {
-
-            availRooms = allrooms;
         }
+        System.out.println(availRooms);
 
         return availRooms;
     }
+
 
     public Collection<Reservation> getCustomersReservation(Customer customer){
 
@@ -133,7 +156,7 @@ public class ReservationService {
         }
     }
 
-    public Collection<IRoom> getAllRooms(){
+     public Collection<IRoom> getAllRooms(){
 
 
         return allrooms;

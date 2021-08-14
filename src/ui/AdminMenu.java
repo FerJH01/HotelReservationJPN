@@ -28,8 +28,7 @@ public class AdminMenu {
                     System.out.println("2. See all Rooms");
                     System.out.println("3. See all Reservations");
                     System.out.println("4. Add a Room");
-                    System.out.println("5. Add Test Data / found customer by email");
-                    System.out.println("6. Back to the Main Menu");
+                    System.out.println("5. Back to the Main Menu");
                     System.out.println("-------------------------------------------------------");
 
                     int option = Integer.parseInt(scanner.nextLine());
@@ -51,16 +50,13 @@ public class AdminMenu {
                             addRoom();
 
                             break;
-                        case 5:
-                            System.out.println("This is option 5");
 
-                            break;
-                        case 6:
+                        case 5:
 
                             MainMenu.drawMainOptions();
 
                         default:
-                            System.out.println("Please select a an option from 1 to 6");
+                            System.out.println("Please select a an option from 1 to 5");
 
                     }
                 } catch (NumberFormatException e) {
@@ -184,7 +180,7 @@ do {
 
             priceMismatch = true;
 
-            input.next();
+            input.nextLine();
         }
     } while (priceMismatch);
 
@@ -223,7 +219,7 @@ do {
 
             System.out.println("This is not a valid input.");
 
-            input.next();
+            input.nextLine();
 
         }
 
@@ -244,6 +240,8 @@ do {
 
     }
 
+    input.nextLine();
+
 
     do {
         System.out.println("Keep adding rooms? Y/N");
@@ -257,7 +255,6 @@ do {
 
 AdminResource.addRoom(rooms);
 
-
     }
 
 
@@ -265,9 +262,5 @@ AdminResource.addRoom(rooms);
 
 
 
-    //optional
-    public static void addTestData(){
-        //method that Admin can use to add customers / rooms and reservations as test
 
-    }
 }
