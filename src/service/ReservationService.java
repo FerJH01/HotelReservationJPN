@@ -39,15 +39,8 @@ public class ReservationService {
     }
 
     public IRoom getARoom(String roomId) {
-        IRoom foundRoom = null;
 
-        for (IRoom room : allrooms) {
-
-            if (room.getRoomNumber().equals(roomId)) {
-                foundRoom = room;
-            }
-        }
-        return foundRoom;
+        return getRoom(roomId);
     }
 
 
@@ -121,39 +114,13 @@ public class ReservationService {
 
     public Collection<Reservation> getCustomersReservation(Customer customer){
 
-        Collection<Reservation> allReservationsFound = new ArrayList<>();
-
-            for (Reservation res : reservations) {
-
-                if (res.getCustomer().equals(customer)) {
-
-                    allReservationsFound.add(res);
-
-
-                }
-
-
-            }
-        
-
-        return allReservationsFound;
+        return getReservation(customer);
     }
 
 
     public void printAllReservation(){
 
-        if(!reservations.isEmpty()) {
-
-            for (Reservation reservation : reservations) {
-
-                System.out.println(reservation);
-            }
-
-        }else{
-
-            System.out.println("There are not reservations to show at the moment");
-
-        }
+        printReservations();
     }
 
      public Collection<IRoom> getAllRooms(){
@@ -163,5 +130,41 @@ public class ReservationService {
     }
 
 
+    Collection<Reservation> getReservation(Customer customer){
+
+         Collection<Reservation> allReservationsFound = new ArrayList<>();
+
+         for (Reservation res : reservations) {
+
+             if (res.getCustomer().equals(customer)) {
+
+                 allReservationsFound.add(res);
+             }
+         }
+         return allReservationsFound;
+     }
+
+     private void printReservations(){
+
+        if(!reservations.isEmpty()) {
+            for (Reservation reservation : reservations) {
+                System.out.println(reservation);
+             }
+        }else{
+            System.out.println("There are not reservations to show at the moment");
+        }
+    }
+
+    IRoom getRoom(String roomId){
+
+        IRoom foundRoom = null;
+        for (IRoom room : allrooms) {
+
+            if (room.getRoomNumber().equals(roomId)) {
+                foundRoom = room;
+            }
+        }
+        return foundRoom;
+    }
 
 }
