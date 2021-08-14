@@ -5,9 +5,6 @@ import api.HotelResource;
 import model.Customer;
 import model.IRoom;
 import model.Reservation;
-import service.ReservationService;
-
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -16,7 +13,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
-
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -43,24 +39,10 @@ public class MainMenu {
                     int option = Integer.parseInt(scanner.nextLine());
 
                     switch (option) {
-                        case 1 -> {
-                            findAndReserveARoom();
-
-                        }
-                        case 2 -> {
-                            seeMyReservation();
-
-                        }
-                        case 3 -> {
-
-                            createAnAccount();
-
-                        }
-                        case 4 -> {
-
-                            AdminMenu.drawAdminOptions();
-
-                        }
+                        case 1 -> findAndReserveARoom();
+                        case 2 -> seeMyReservation();
+                        case 3 -> createAnAccount();
+                        case 4 -> AdminMenu.drawAdminOptions();
                         case 5 -> {
                             System.out.println("The application will end now");
                             System.exit(-1);
@@ -71,46 +53,40 @@ public class MainMenu {
 
                     System.out.println("ERROR! Please enter a valid option number." + "\n");
 
-
                 }
-
-
             }
-
-
         }
-
-
     }
 
-public static void findAndReserveARoom() {
-    Scanner input = new Scanner(System.in);
-    String email;
-    String checkIn;
-    String checkOut;
-    Date dateCheckIn = null;
-    Date dateCheckOut = null;
-    Date dateCheckInPlus7 = null;
-    Date dateCheckOutPlus7 = null;
-    String patter = "dd/MM/yyyy";
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat(patter);
-    LocalDate currentLocalDate = LocalDate.now();
-    ZoneId defaultZoneId = ZoneId.systemDefault();
-    Date currentDate = Date.from(currentLocalDate.atStartOfDay(defaultZoneId).toInstant());
-    Collection<IRoom> availableRooms;
-    String roomChosen;
-    boolean out = true;
-    String seeFreeRoomsNextWeek;
-    IRoom chosenRoomObject = null;
-    boolean keepHere = true;
+    public static void findAndReserveARoom() {
 
-    email = emailValidator();
+        Scanner input = new Scanner(System.in);
+        String email;
+        String checkIn;
+        String checkOut;
+        Date dateCheckIn = null;
+        Date dateCheckOut = null;
+        Date dateCheckInPlus7 = null;
+        Date dateCheckOutPlus7 = null;
+        String patter = "dd/MM/yyyy";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(patter);
+        LocalDate currentLocalDate = LocalDate.now();
+        ZoneId defaultZoneId = ZoneId.systemDefault();
+        Date currentDate = Date.from(currentLocalDate.atStartOfDay(defaultZoneId).toInstant());
+        Collection<IRoom> availableRooms;
+        String roomChosen;
+        boolean out = true;
+        String seeFreeRoomsNextWeek;
+        IRoom chosenRoomObject = null;
+        boolean keepHere = true;
+        email = emailValidator();
 
-    if (HotelResource.getCustomer(email) != null) {
+        if (HotelResource.getCustomer(email) != null) {
 
 
-        boolean dateIsBeforeCurrent;
-        boolean dateCheckOutbeforedateCheckIn;
+            boolean dateIsBeforeCurrent;
+            boolean dateCheckOutbeforedateCheckIn;
+
         do {
             dateIsBeforeCurrent = false;
 
@@ -132,18 +108,14 @@ public static void findAndReserveARoom() {
 
             try {
 
-
                 if (dateCheckIn != null) {
                     dateIsBeforeCurrent = dateCheckIn.before(currentDate);
 
                 }
 
-
             } catch (NullPointerException ex) {
                 System.out.println("Current Date is null");
-
             }
-
 
         } while ((!dateValidator(checkIn)) || dateIsBeforeCurrent);
 
@@ -162,13 +134,9 @@ public static void findAndReserveARoom() {
             } catch (ParseException e) {
 
                 System.out.println("Invalid date");
-
-
-
             }
 
             try {
-
 
                 if (dateCheckOut != null) {
                     dateIsBeforeCurrent = dateCheckOut.before(currentDate);
@@ -176,21 +144,18 @@ public static void findAndReserveARoom() {
 
                 }
 
-
             } catch (NullPointerException ex) {
+
                 System.out.println("Current Date is null");
 
             }
 
         } while (!dateValidator(checkOut) || dateIsBeforeCurrent || dateCheckOutbeforedateCheckIn);
 
-
     } else {
 
         System.out.println("You need to create an account first. Please select option 3.");
         drawMainOptions();
-
-
     }
 
     //CONTINUAR CON PROCESO DE RESERVA
@@ -270,6 +235,7 @@ public static void findAndReserveARoom() {
 //
 //    }
 
+
     do{
         availableRooms = HotelResource.findARoom(dateCheckIn, dateCheckOut);
 
@@ -297,37 +263,30 @@ public static void findAndReserveARoom() {
                     System.out.println(dateCheckInPlus7);
                     System.out.println(dateCheckOutPlus7);
 
-
                 } catch (ParseException ex) {
 
                     System.out.println("Unable to parse the date");
-
-
                 }
-
 
                 availableRooms = HotelResource.findARoom(dateCheckIn, dateCheckOut);
                 System.out.println("Available Rooms");
+
                 for (IRoom room : availableRooms) {
 
                     System.out.println(room);
-
                 }
             } else {
-
 
                 keepHere = false;
                 out = false;
 
             }
-
-
         } else {
-            
+
             keepHere = false;
             
-
             System.out.println("Available Rooms");
+
             for (IRoom room : availableRooms) {
 
                 System.out.println(room);
@@ -359,55 +318,42 @@ public static void findAndReserveARoom() {
             out = false;
         }
 
-
     }
 
 
 
 }
 
+    public static void seeMyReservation() {
 
-
-
-
-
-
-
-public static void seeMyReservation() {
         Collection <Reservation> myReservations;
+        String email;
+        email = emailValidator();
 
-    String email;
-    email = emailValidator();
+        try {
+            myReservations = HotelResource.getCustomerReservation(email);
 
+            if(!myReservations.isEmpty()) {
 
-    try {
-
-    myReservations = HotelResource.getCustomerReservation(email);
-
-        if(!myReservations.isEmpty()) {
-
-            for (Reservation reservation : myReservations) {
+                for (Reservation reservation : myReservations) {
 
                 System.out.println(reservation);
             }
 
-        } else{
+            }else{
 
-            System.out.println("No reservations found with the provided email.");
-        }
+                System.out.println("No reservations found with the provided email.");
+            }
 
     }catch (NullPointerException ex){
 
         System.out.println("No reservations found with the provided email.");
 
         }
-
-
-
 }
 
+    public static void createAnAccount(){
 
-public static void createAnAccount(){
         String email;
         String firstName;
         String lastName;
@@ -483,8 +429,6 @@ public static void createAnAccount(){
     }
 
     public static boolean dateValidator(String date){
-
-
 
         final DateTimeFormatter dateformat = new DateTimeFormatterBuilder()
                 .parseStrict()

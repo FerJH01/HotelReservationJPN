@@ -1,17 +1,13 @@
 package ui;
 
 import api.AdminResource;
-import api.HotelResource;
 import model.FreeRoom;
 import model.IRoom;
 import model.Room;
 import model.RoomType;
-import service.ReservationService;
-
 import java.util.*;
 import java.util.regex.Pattern;
 
-import static ui.MainMenu.drawMainOptions;
 
 public class AdminMenu {
 
@@ -34,30 +30,12 @@ public class AdminMenu {
                     int option = Integer.parseInt(scanner.nextLine());
 
                     switch (option) {
-                        case 1:
-
-                            seeAllCustomers();
-                            break;
-                        case 2:
-                            seeAllRooms();
-
-                            break;
-                        case 3:
-                            seeAllReservations();
-
-                            break;
-                        case 4:
-                            addRoom();
-
-                            break;
-
-                        case 5:
-
-                            MainMenu.drawMainOptions();
-
-                        default:
-                            System.out.println("Please select a an option from 1 to 5");
-
+                        case 1-> seeAllCustomers();
+                        case 2-> seeAllRooms();
+                        case 3-> seeAllReservations();
+                        case 4->addRoom();
+                        case 5->MainMenu.drawMainOptions();
+                        default-> System.out.println("Please select a an option from 1 to 5");
                     }
                 } catch (NumberFormatException e) {
 
@@ -78,23 +56,22 @@ public class AdminMenu {
             System.out.println("There aren't customers to show at the moment");
         }
     }
-    public static void seeAllRooms(){
+    public static void seeAllRooms() {
 
         Collection<IRoom> rooms;
         rooms = AdminResource.getAllRooms();
 
-    if(rooms.isEmpty()){
+        if (rooms.isEmpty()) {
 
-        System.out.println("There are no rooms to display at the moment");
+            System.out.println("There are no rooms to display at the moment");
 
-    } else {
-        for(IRoom room: rooms) {
+        } else {
 
-            System.out.println(room);
+            for (IRoom room : rooms) {
+
+                System.out.println(room);
+            }
         }
-
-        }
-
     }
 
     public static void seeAllReservations(){
@@ -102,7 +79,6 @@ public class AdminMenu {
         AdminResource.displayAllReservations();
 
     }
-
 
     public static void addRoom(){
         Scanner input = new Scanner(System.in);
@@ -216,7 +192,6 @@ do {
 
         } catch (InputMismatchException ex) {
 
-
             System.out.println("This is not a valid input.");
 
             input.nextLine();
@@ -242,25 +217,14 @@ do {
 
     input.nextLine();
 
-
     do {
         System.out.println("Keep adding rooms? Y/N");
         keepAdding = input.nextLine().toLowerCase().trim();
     }while(!keepAdding.equals("y") && !keepAdding.equals("n"));
 
-
-
 }while(keepAdding.equals("y"));
-
 
 AdminResource.addRoom(rooms);
 
     }
-
-
-
-
-
-
-
 }
