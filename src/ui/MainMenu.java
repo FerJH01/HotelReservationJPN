@@ -1,3 +1,5 @@
+
+
 package ui;
 
 import api.AdminResource;
@@ -18,12 +20,15 @@ import java.util.regex.Pattern;
 
 public class MainMenu {
 
+    /**
+     * Method that prints main options to the terminal
+     */
+
     public static void drawMainOptions() {
-        boolean t = true;
 
         try (Scanner scanner = new Scanner(System.in)) {
 
-            while (t) {
+            while (true) {
 
                 try {
                     System.out.println("\n");
@@ -58,6 +63,10 @@ public class MainMenu {
         }
     }
 
+    /**
+     * Method that finds and reserves an available room within specified date ranges.
+     * if no room is available, adds 7 days to check in and check out.
+     */
     public static void findAndReserveARoom() {
 
         Scanner input = new Scanner(System.in);
@@ -66,8 +75,6 @@ public class MainMenu {
         String checkOut;
         Date dateCheckIn = null;
         Date dateCheckOut = null;
-        Date dateCheckInPlus7 = null;
-        Date dateCheckOutPlus7 = null;
         String patter = "dd/MM/yyyy";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(patter);
         LocalDate currentLocalDate = LocalDate.now();
@@ -158,83 +165,6 @@ public class MainMenu {
         drawMainOptions();
     }
 
-    //CONTINUAR CON PROCESO DE RESERVA
-
-
-
-//    availableRooms = HotelResource.findARoom(dateCheckIn, dateCheckOut);
-//
-//    if(!availableRooms.isEmpty()) {
-//
-//        System.out.println("Available Rooms");
-//        for (IRoom room : availableRooms) {
-//
-//            System.out.println(room);
-//
-//        }
-//        do {
-//            System.out.println("Please choose the room number you would like to reserve: ");
-//            roomChosen = input.nextLine();
-//
-//
-//            if (HotelResource.getRoom(roomChosen) == null) {
-//
-//                System.out.println("Invalid Room number.");
-//
-//            } else {
-//                chosenRoomObject = HotelResource.getRoom(roomChosen);
-//
-//                System.out.println("**You have reserved the following room**");
-//
-//                System.out.println(HotelResource.getRoom(roomChosen));
-//
-//                HotelResource.bookARoom(email, chosenRoomObject, dateCheckIn, dateCheckOut);
-//
-//                out = false;
-//            }
-//
-//
-//        } while (out);
-//
-//    }else {
-//
-//        System.out.println("There are no rooms available at the moment"+"\n");
-//
-//        do {
-//            System.out.println("Would you like to see rooms available in the next 7 days? y/n");
-//            seeFreeRoomsNextWeek = input.nextLine().toLowerCase().trim();
-//        }while(!seeFreeRoomsNextWeek.equals("y") && !seeFreeRoomsNextWeek.equals("n"));
-//
-//        if(seeFreeRoomsNextWeek.equals("y")){
-//
-//            Calendar c1 = Calendar.getInstance();
-//            Calendar c2 = Calendar.getInstance();
-//            c1.setTime(dateCheckIn);
-//            c2.setTime(dateCheckOut);
-//            c1.add(Calendar.DATE,7);
-//            c2.add(Calendar.DATE,7);
-//
-//            try {
-//                dateCheckIn = simpleDateFormat.parse(simpleDateFormat.format(c1.getTime()));
-//                dateCheckOut = simpleDateFormat.parse(simpleDateFormat.format(c2.getTime()));
-//                System.out.println(dateCheckIn);
-//                System.out.println(dateCheckOut);
-//
-//
-//            }catch (ParseException ex){
-//
-//                System.out.println("Unable to parse the date");
-//
-//
-//            }
-//
-//
-//
-//
-//        }
-//
-//    }
-
 
     do{
         availableRooms = HotelResource.findARoom(dateCheckIn, dateCheckOut);
@@ -258,10 +188,10 @@ public class MainMenu {
                 c2.add(Calendar.DATE, 7);
 
                 try {
-                    dateCheckInPlus7 = simpleDateFormat.parse(simpleDateFormat.format(c1.getTime()));
-                    dateCheckOutPlus7 = simpleDateFormat.parse(simpleDateFormat.format(c2.getTime()));
-                    System.out.println(dateCheckInPlus7);
-                    System.out.println(dateCheckOutPlus7);
+                    dateCheckIn = simpleDateFormat.parse(simpleDateFormat.format(c1.getTime()));
+                    dateCheckOut = simpleDateFormat.parse(simpleDateFormat.format(c2.getTime()));
+                    System.out.println("Checkin Date: " + dateCheckIn);
+                    System.out.println("Checkout Date: " + dateCheckOut);
 
                 } catch (ParseException ex) {
 
@@ -321,9 +251,11 @@ public class MainMenu {
     }
 
 
-
 }
 
+    /**
+     * Method that prints all reservations for a specified customer email.
+     */
     public static void seeMyReservation() {
 
         Collection <Reservation> myReservations;
@@ -352,6 +284,9 @@ public class MainMenu {
         }
 }
 
+    /**
+     * Method that allows to create an account in the system
+     */
     public static void createAnAccount(){
 
         String email;
@@ -402,6 +337,10 @@ public class MainMenu {
                 System.out.println(cust);
     }
 
+    /**
+     * Method that validates the email provided is valid according format defined by Regex.
+     * @return validated email
+     */
     public static String emailValidator(){
         Scanner input = new Scanner(System.in);
         String email;
@@ -428,6 +367,11 @@ public class MainMenu {
 
     }
 
+    /**
+     * Method that validates the date provided by the user.
+     * @param date provided by the user.
+     * @return boolean
+     */
     public static boolean dateValidator(String date){
 
         final DateTimeFormatter dateformat = new DateTimeFormatterBuilder()

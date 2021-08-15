@@ -11,12 +11,14 @@ import java.util.regex.Pattern;
 
 public class AdminMenu {
 
+    /**
+     * Method that prints the Admin options in the terminal.
+     */
     public static void drawAdminOptions() {
-        boolean t = true;
 
         try (Scanner scanner = new Scanner(System.in)) {
 
-            while (t) {
+            while (true) {
 
                 try {
                     System.out.println("-------------------------------------------------------");
@@ -33,8 +35,8 @@ public class AdminMenu {
                         case 1-> seeAllCustomers();
                         case 2-> seeAllRooms();
                         case 3-> seeAllReservations();
-                        case 4->addRoom();
-                        case 5->MainMenu.drawMainOptions();
+                        case 4-> addRoom();
+                        case 5-> MainMenu.drawMainOptions();
                         default-> System.out.println("Please select a an option from 1 to 5");
                     }
                 } catch (NumberFormatException e) {
@@ -45,7 +47,9 @@ public class AdminMenu {
         }
     }
 
-
+    /**
+     * Method that prints all customers in the system
+     */
     public static void seeAllCustomers() {
 
         if (AdminResource.getAllCustomer() != null) {
@@ -56,6 +60,10 @@ public class AdminMenu {
             System.out.println("There aren't customers to show at the moment");
         }
     }
+
+    /**
+     * Method that prints all rooms in the system.
+     */
     public static void seeAllRooms() {
 
         Collection<IRoom> rooms;
@@ -74,12 +82,19 @@ public class AdminMenu {
         }
     }
 
+    /**
+     * Method that prints all reservations in the system.
+     */
     public static void seeAllReservations(){
 
         AdminResource.displayAllReservations();
 
     }
 
+    /**
+     * Method that adds a room to a Room Collection.
+     * Allows the Admin to keep adding rooms.
+     */
     public static void addRoom(){
         Scanner input = new Scanner(System.in);
         List<IRoom> rooms = new ArrayList<IRoom>();
@@ -98,7 +113,6 @@ public class AdminMenu {
         double price = 0;
         RoomType roomType = null;
         int type = 0;
-        int flag = 0;
 
 
 do {
@@ -113,7 +127,6 @@ do {
 
             incompatibleFormat = false;
             repeatedRoomNumber = roomNumbers.add(roomNumber);
-
 
         } else {
 
@@ -159,7 +172,6 @@ do {
             input.nextLine();
         }
     } while (priceMismatch);
-
 
 
     do {

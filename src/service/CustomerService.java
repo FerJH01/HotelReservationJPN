@@ -11,6 +11,9 @@ public class CustomerService {
     private static CustomerService customerService;
     private List<Customer> customers;
 
+    /**
+     * Implementation of Singleton
+     */
     private CustomerService(){
         this.customers = new ArrayList<Customer>();
     }
@@ -24,12 +27,22 @@ public class CustomerService {
         return customerService;
     }
 
-
+    /**
+     * Method adds a Customer object to a Customer Collection
+     * @param email customer email
+     * @param firstName customer first name
+     * @param lastName customer last name
+     */
     public void addCustomer(String email, String firstName, String lastName){
             Customer customer = new Customer(email,firstName,lastName);
             customers.add(customer);
     }
 
+    /**
+     * Method gets a Customer object with a provided customer email
+     * @param customerEmail customer email
+     * @return foundCustomer
+     */
     public Customer getCustomer(String customerEmail){
 
         Customer foundCustomer = null;
@@ -45,20 +58,24 @@ public class CustomerService {
         return foundCustomer;
     }
 
+    /**
+     * Method get all customers from Customer Collection
+     * @return allCustomers
+     */
     public Collection<Customer> getAllCustomers(){
 
-        Collection<Customer> customers1;
+        Collection<Customer> allCustomers;
 
             if(!customers.isEmpty()){
 
-                customers1 = customers;
+                allCustomers = customers;
 
             } else {
 
-                customers1 = null;
+                allCustomers = null;
             }
 
-        return customers1;
+        return allCustomers;
     }
 
 }
