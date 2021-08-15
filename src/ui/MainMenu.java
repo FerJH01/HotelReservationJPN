@@ -1,5 +1,3 @@
-
-
 package ui;
 
 import api.AdminResource;
